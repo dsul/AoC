@@ -8,22 +8,16 @@ CHAR_TO_BINARY_MAP = {
 }
 
 def seat_ids(data: List[str]) -> None:
-    seat_ids = []
+    seat_ids = set()
     for boarding_pass in data:
-        seat_ids.append(int(''.join([CHAR_TO_BINARY_MAP[char] for char in boarding_pass]), 2))
-    seat_ids.sort()
-    highest_seat_id = seat_ids[-1]
-    missing_seat_id = None
-    for sid in range(seat_ids[0], seat_ids[-1] - 1):
-        if (
-                sid not in seat_ids
-                and sid + 1 in seat_ids
-                and sid - 1 in seat_ids
-            ):
-            missing_seat_id = sid
+        seat_ids.add(int(''.join([CHAR_TO_BINARY_MAP[char] for char in boarding_pass]), 2))
+    highest_seat_id = max(seat_ids)
+    for i in range(0, 2**10):
+        if i not in seat_ids and i + 1 in seat_ids and i - 1 in seat_ids:
+            print(i)
+            break
 
     print(highest_seat_id)
-    print(missing_seat_id)
 
 def parse_input_file() -> List[int]:
    file = open('./input.txt', 'r')
